@@ -1,3 +1,4 @@
+import 'package:bottom_navigation_bar_stacked/app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,6 +10,9 @@ class PostsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PostsViewModel>.reactive(
+      disposeViewModel: false,
+      // Inidicate that we only want to initialise a specialty viewmodel once
+      initialiseSpecialViewModelsOnce: true,
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.grey[900],
         body: model.isBusy
@@ -28,6 +32,7 @@ class PostsView extends StatelessWidget {
               )
             : !model.hasError
                 ? ListView.separated(
+                    key: PageStorageKey('storage-key'),
                     padding: const EdgeInsets.only(top: 55),
                     separatorBuilder: (context, index) => const SizedBox(
                           height: 20,
@@ -80,7 +85,7 @@ class PostsView extends StatelessWidget {
                     ),
                   ),
       ),
-      viewModelBuilder: () => PostsViewModel(),
+      viewModelBuilder: () => locator<PostsViewModel>(),
     );
   }
 }
